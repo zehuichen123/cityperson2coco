@@ -3,12 +3,13 @@ import scipy.io as si
 import os
 import json
 import time
+import argparse
 
 ## YOUR CONFIGURATION
 cityperson_annotation_dir = '/home/tusimple/Documents/data/cityperson/annotations'
 new_anntation_dir = '/home/tusimple/Documents/data/cityperson/annotations'
-data_type = 'val'               # train / val
-box_type = 'visible'            # visible / full
+data_type = None               # train / val
+box_type = None            # visible / full
 
 ## DATASET CONFIGURATION
 START_BOX_ID = 1
@@ -17,6 +18,16 @@ bbox_id = START_BOX_ID
 image = {}
 annotation = {}
 categories = {}
+
+def parse_args():
+    global data_type, box_type
+    parser = argparse.ArgumentParser(description='Generate COCO format annotation for CityPerson')
+    parser.add_argument('--data_type', help='dataset split, train/val', type=str)
+    parser.add_argument('--box_type', help='box type, visible/full', type=str)
+
+    args = parser.parse_args()
+    data_type = args.data_type
+    box_type = args.box_type
 
 def load_annotation():
     file_name = 'anno_' + data_type + '.mat'
@@ -69,6 +80,7 @@ def save_result(res_dict):
 
 if __name__ == '__main__':
     t1 = time.time()
+    parse_args()
     print("Converting [%s] cityperson dataset into COCO format..."%data_type)
     anno_data = load_annotation()
     res_dict = cityperson2coco(anno_data)

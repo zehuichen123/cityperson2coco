@@ -4,4 +4,4 @@ Convert cityperson annotation from .mat to .json format, the same as COCO annota
 
 ## Usage
 
-`python cityperson2coco.py`
+`python cityperson2coco.py --data_type train --box_type visible`
